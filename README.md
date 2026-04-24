@@ -84,71 +84,6 @@ SENSOR SPECIFICATIONS (AJ-SR04M)
   Waterproofing        :  IP67 rated transducer head
   Cable Length         :  ~2.5 m (varies by supplier)
 
-
---------------------------------------------------------------------------------
-ARDUINO / PLATFORMIO CODE
---------------------------
-
-  File: src/main.cpp
-
-  -----------------------------------------------------------------------
-  #include <Arduino.h>
-
-  #define TRIG_PIN  5
-  #define ECHO_PIN  18
-
-  void setup() {
-    Serial.begin(115200);
-    pinMode(TRIG_PIN, OUTPUT);
-    pinMode(ECHO_PIN, INPUT);
-    Serial.println("AJ-SR04M Ready");
-  }
-
-  float getDistanceCm() {
-    digitalWrite(TRIG_PIN, LOW);
-    delayMicroseconds(2);
-    digitalWrite(TRIG_PIN, HIGH);
-    delayMicroseconds(10);
-    digitalWrite(TRIG_PIN, LOW);
-
-    long duration = pulseIn(ECHO_PIN, HIGH, 60000);
-
-    if (duration == 0) {
-      return -1;  // No echo received
-    }
-
-    return (duration * 0.0343) / 2.0;
-  }
-
-  void loop() {
-    float distance = getDistanceCm();
-
-    if (distance < 0) {
-      Serial.println("Out of range or no echo");
-    } else {
-      Serial.print("Distance: ");
-      Serial.print(distance, 1);
-      Serial.println(" cm");
-    }
-
-    delay(200);
-  }
-  -----------------------------------------------------------------------
-
-  platformio.ini:
-
-  -----------------------------------------------------------------------
-  [env:esp32dev]
-  platform = espressif32
-  board = esp32dev
-  framework = arduino
-  monitor_speed = 115200
-  -----------------------------------------------------------------------
-
-  Note: The #include <Arduino.h> line is required in PlatformIO.
-  Arduino IDE adds this automatically, but PlatformIO does not.
-
-
 --------------------------------------------------------------------------------
 HOW IT WORKS
 ------------
@@ -201,7 +136,3 @@ NOTES
   - For Home Assistant integration, consider flashing the ESP32 with ESPHome
     instead of custom Arduino code.
 
-
-================================================================================
-  END OF DOCUMENT
-================================================================================
