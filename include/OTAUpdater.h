@@ -2,27 +2,19 @@
 
 #include <Arduino.h>
 
-namespace OTAUpdater {
+namespace OTAUPDATER {
 
 struct Config {
   const char *hostname = "waterlevel-esp32";
-  const char *password = "";   // optional; leave empty for none
-  uint16_t port = 3232;        // ArduinoOTA default port
-  bool rebootOnSuccess = true; // default ArduinoOTA behavior
+  const char *password = ""; // optional; empty = no auth
+  uint16_t port = 3232;      // default ArduinoOTA port
 };
 
-// Call after Wi-Fi is connected (STA or AP), before serving.
+// Call after Wi‑Fi is connected.
 void begin(const Config &cfg = Config{});
 
 // Call frequently in loop().
 void loop();
 
-} // namespace OTAUpdater
+} // namespace OTAUPDATER
 
-#pragma once
-#include <Arduino.h>
-
-namespace OTAUpdater {
-  void begin(const char* hostname = "esp32-ota", const char* password = nullptr, uint16_t port = 3232);
-  void handle();
-}
